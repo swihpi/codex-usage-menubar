@@ -1,0 +1,6 @@
+.build/
+.swiftpm/
+work/
+outputs/
+.codex/
+.DS_Store

@@ -1,0 +1,21 @@
+name: macOS build
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check shell syntax
+        run: bash -n script/build_and_run.sh script/install.sh
+      - name: Build source and verify bundle
+        run: |
+          ./script/build_and_run.sh --build
+          codesign --verify --strict 'outputs/Codex Usage.app'
+          plutil -lint 'outputs/Codex Usage.app/Contents/Info.plist'
