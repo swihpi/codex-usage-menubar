@@ -18,11 +18,11 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <plist version="1.0"><dict>
 <key>CFBundleExecutable</key><string>CodexUsage</string>
 <key>CFBundleIdentifier</key><string>com.swi.codexusage</string>
-<key>CFBundleName</key><string>Codex Usage</string>
-<key>CFBundleDisplayName</key><string>Codex Usage</string>
+<key>CFBundleName</key><string>ChatGPT/Codex Usage</string>
+<key>CFBundleDisplayName</key><string>ChatGPT/Codex Usage</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>1.0.0</string>
-<key>CFBundleVersion</key><string>1</string>
+<key>CFBundleShortVersionString</key><string>1.0.1</string>
+<key>CFBundleVersion</key><string>2</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>NSPrincipalClass</key><string>NSApplication</string>
 <key>LSUIElement</key><true/>

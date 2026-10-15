@@ -72,11 +72,11 @@ enum UsageFailure: LocalizedError {
     case missingHelper, timeout, disconnected, service, invalid
     var errorDescription: String? {
         switch self {
-        case .missingHelper: return "Codex helper not found. Install or open Codex, then refresh."
+        case .missingHelper: return "ChatGPT/Codex helper not found. Install or open ChatGPT/Codex, then refresh."
         case .timeout: return "Usage request timed out. Check your connection and refresh."
-        case .disconnected: return "Codex helper stopped before returning usage. Open Codex and refresh."
-        case .service: return "Usage service unavailable or sign-in required. Open Codex and refresh."
-        case .invalid: return "Codex returned no readable usage limits."
+        case .disconnected: return "ChatGPT/Codex helper stopped before returning usage. Open ChatGPT/Codex and refresh."
+        case .service: return "Usage service unavailable or sign-in required. Open ChatGPT/Codex and refresh."
+        case .invalid: return "ChatGPT/Codex returned no readable usage limits."
         }
     }
 }
@@ -116,7 +116,7 @@ final class UsageReader {
             data.append(10)
             try input.fileHandleForWriting.write(contentsOf: data)
         }
-        try send(["id": 1, "method": "initialize", "params": ["clientInfo": ["name": "codex_usage_menu", "title": "Codex Usage", "version": "1.0.0"]]])
+        try send(["id": 1, "method": "initialize", "params": ["clientInfo": ["name": "codex_usage_menu", "title": "ChatGPT/Codex Usage", "version": "1.0.1"]]])
         var buffer = Data()
         while Date() < deadline {
             let chunk = output.fileHandleForReading.availableData
@@ -162,7 +162,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApp.setActivationPolicy(.accessory)
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem.button?.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular)
-        statusItem.button?.setAccessibilityLabel("Codex remaining percentages and next reset times")
+        statusItem.button?.setAccessibilityLabel("ChatGPT/Codex remaining percentages and next reset times")
         let menu = NSMenu(); menu.delegate = self; statusItem.menu = menu
         if let data = defaults.data(forKey: "lastSnapshot") { snapshot = try? JSONDecoder().decode(Snapshot.self, from: data) }
         failure = snapshot == nil ? nil : "Showing saved reading while refreshing."
@@ -178,12 +178,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             attributes: [.font: NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular), .foregroundColor: NSColor.secondaryLabelColor]))
         if stale { title.append(NSAttributedString(string: " · stale", attributes: [.font: NSFont.systemFont(ofSize: 12), .foregroundColor: NSColor.secondaryLabelColor])) }
         statusItem.button?.attributedTitle = title
-        statusItem.button?.toolTip = "Codex • Remaining allowance • Reset times in \(TimeZone.current.identifier)\n" + (failure ?? (refreshing ? "Refreshing…" : "Click for details and controls"))
+        statusItem.button?.toolTip = "ChatGPT/Codex • Remaining allowance • Reset times in \(TimeZone.current.identifier)\n" + (failure ?? (refreshing ? "Refreshing…" : "Click for details and controls"))
     }
     func menuNeedsUpdate(_ menu: NSMenu) {
         render(); menu.removeAllItems()
         func info(_ title: String) { let item = NSMenuItem(title: title, action: nil, keyEquivalent: ""); item.isEnabled = false; menu.addItem(item) }
-        info("Codex Usage — remaining allowance")
+        info("ChatGPT/Codex Usage — remaining allowance")
         if let snapshot {
             info(snapshot.part(snapshot.fiveHour, weekly: false, full: true))
             info(snapshot.part(snapshot.weekly, weekly: true, full: true))
@@ -195,11 +195,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
         let refreshItem = NSMenuItem(title: refreshing ? "Refreshing…" : "Refresh now", action: #selector(refreshAction), keyEquivalent: "r")
         refreshItem.target = self; refreshItem.isEnabled = !refreshing; menu.addItem(refreshItem)
-        let open = NSMenuItem(title: "Open Codex", action: #selector(openCodex), keyEquivalent: ""); open.target = self; menu.addItem(open)
+        let open = NSMenuItem(title: "Open ChatGPT/Codex", action: #selector(openCodex), keyEquivalent: ""); open.target = self; menu.addItem(open)
         let login = NSMenuItem(title: "Launch at login", action: #selector(toggleLogin), keyEquivalent: "")
         login.target = self; login.state = SMAppService.mainApp.status == .enabled ? .on : .off; menu.addItem(login)
         menu.addItem(.separator())
-        let quit = NSMenuItem(title: "Quit Codex Usage", action: #selector(quitApp), keyEquivalent: "q"); quit.target = self; menu.addItem(quit)
+        let quit = NSMenuItem(title: "Quit ChatGPT/Codex Usage", action: #selector(quitApp), keyEquivalent: "q"); quit.target = self; menu.addItem(quit)
     }
     func refresh() {
         guard !refreshing else { return }; refreshing = true; render()

@@ -10,7 +10,7 @@ while [[ $# -gt 0 ]]; do
     *) echo 'Usage: ./script/install.sh [--destination DIRECTORY] [--no-launch]' >&2; exit 2 ;;
   esac
 done
-[[ "$(uname -s)" == Darwin ]] || { echo 'Codex Usage requires macOS.' >&2; exit 1; }
+[[ "$(uname -s)" == Darwin ]] || { echo 'ChatGPT/Codex Usage requires macOS.' >&2; exit 1; }
 if ! xcode-select -p >/dev/null 2>&1 || ! xcrun --find swift >/dev/null 2>&1; then
   echo 'Apple Command Line Tools are required. Run xcode-select --install, complete the macOS installer, then try again.' >&2
   exit 1

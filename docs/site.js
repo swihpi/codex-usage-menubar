@@ -5,7 +5,7 @@ const status = document.getElementById('copy-status');
 button.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(prompt.value);
-    status.textContent = 'Copied. Paste it into Codex on your Mac.';
+    status.textContent = 'Copied. Paste it into ChatGPT/Codex on your Mac.';
     button.textContent = 'Prompt copied ✓';
   } catch {
     prompt.focus();
